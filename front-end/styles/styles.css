@@ -1,0 +1,28 @@
+body {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: aliceblue;
+}
+
+#productList {
+    margin-top: 3em;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: 40% 40% 40%;
+}
+
+.product_content {
+    min-width: 40%;
+    margin: 1em;
+    border: 1px solid grey;
+}
+
+.product_img {
+    max-width:40%;
+    max-height:40%;
+    object-fit: contain;
+}
+
+.add-btn {
+    background-color: red;
+}

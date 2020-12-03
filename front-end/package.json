@@ -1,0 +1,15 @@
+{
+    "name": "orinoco-frontend",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "server": "http-server"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "http-server": "^0.12.3"
+    }
+}
