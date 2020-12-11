@@ -1,5 +1,7 @@
-const url = 'http://test-api.io:3000/api/cameras/';
+const url = 'http://localhost:3000/api/cameras/';
 
+// exporter fonction dans un fichier common.js 
+// utiliser fetch pour remplacer l'appel à l'API
 callCamerasApi = () => {
     return new Promise((resolve) => {
         let request = new XMLHttpRequest();
@@ -12,9 +14,9 @@ callCamerasApi = () => {
             this.status < 400
         ) {
             resolve(JSON.parse(this.responseText));
-            console.log("Connecté");
+            console.log("Connected");
         } else {
-            console.log("Non connecté");
+            console.log("Not connected");
         }
         };
         try {
@@ -27,6 +29,7 @@ callCamerasApi = () => {
 };
 
 async function getCameras() {
+    // encadrer dans un try catch
     const cameras = await callCamerasApi();
 
     return cameras;
@@ -48,7 +51,7 @@ async function buildCamerasCards(cameras) {
         let productAction = document.createElement("a");
         let addToCartButton = document.createElement("btn");
     
-        /*Add atributes to HTML balises */
+        /*Add attributes to HTML balises */
         productContent.setAttribute("class", "product_content");
         productImg.setAttribute("class", "product_img_div");
         productPic.setAttribute("src", camera.imageUrl);

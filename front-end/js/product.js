@@ -1,4 +1,4 @@
-const url = 'http://test-api.io:3000/api/cameras/';
+const url = 'http://localhost:3000/api/cameras/';
 
 getIdFromParsedUrl = () => {
     const url = window.location.href;
@@ -21,15 +21,14 @@ callCameraApiWithId = () => {
             this.status < 400
         ) {
             resolve(JSON.parse(this.responseText));
-            console.log("Connecté");
-        } else {
-            console.log("Non connecté");
+            console.log("Connected");
         }
         };
         try {
         request.send();
         } catch (e) {
         console.error(e);
+        console.log("Not connected");
         } finally {
         }
     });
@@ -37,56 +36,79 @@ callCameraApiWithId = () => {
 
 async function getCameraDetails() {
     const cameraDetails = callCameraApiWithId();
-    console.log(cameraDetails);
     return cameraDetails;
 }
 
 async function buildCameraCard(cameraDetails) {
     let cameraCard = document.getElementById("cameraCard");
+    let productContent = document.createElement("section");
+    let productImg= document.createElement("div");
+    let productElement = document.createElement("div");
+    let productPic = document.createElement("img");
+    let productName = document.createElement("h2");
+    let productPrice = document.createElement("p");
+    let productDescription = document.createElement("p");
+    let optionsElements = document.createElement("p");
+    let productOptions = document.createElement("label");
+    let optionsSelector = document.createElement("select");
+    let productAction = document.createElement("a");
+    let addToCartButton = document.createElement("btn");
+
+     /*Add atributes to HTML balises */
+    productContent.setAttribute("class", "product_content");
+    productImg.setAttribute("class", "product_img_div");
+    productPic.setAttribute("class", "product_img");
+    productPic.setAttribute("alt", "Camera picture");
+    productElement.setAttribute("class", "product_element");
+    productName.setAttribute("class", "product_name");
+    productDescription.setAttribute("class", "product_desc");
+    productPrice.setAttribute("class", "product_price");
+    optionsElements.setAttribute("class", "options_elements");
+    productOptions.setAttribute("for", "lenses_options");
+    optionsSelector.setAttribute("name", "lenses");
+    optionsSelector.setAttribute("id", "lenses_options");
+    addToCartButton.setAttribute("class", "add-btn");
+
+    /* HTML elements design */
+    cameraCard.appendChild(productContent);
+    productContent.appendChild(productImg);
+    productImg.appendChild(productPic);
+    productContent.appendChild(productElement);
+    productElement.appendChild(productName);
+    productElement.appendChild(productDescription);
+    productElement.appendChild(productPrice);
+    productElement.appendChild(optionsElements);
+    optionsElements.appendChild(productOptions);
+    optionsElements.appendChild(optionsSelector);
+    productElement.appendChild(productAction);
+    productAction.appendChild(addToCartButton);
+
+    /* HTML balises content */
+    productAction.setAttribute("href", "basket.html");
+    productAction.textContent = "Add to cart";
+    productOptions.textContent = "Choose your lense:";
 
     for (const [key, detail] of Object.entries(await cameraDetails)) {
-        console.log(`${key}: ${detail}`);
-        console.log(detail.name);
-        let productContent = document.createElement("section");
-        let productImg= document.createElement("div");
-        let productElement = document.createElement("div");
-        let productPic = document.createElement("img");
-        let productName = document.createElement("h2");
-        let productPrice = document.createElement("p");
-        let productAction = document.createElement("a");
-        let addToCartButton = document.createElement("btn");
-    
-        /*Add atributes to HTML balises */
-        productContent.setAttribute("class", "product_content");
-        productImg.setAttribute("class", "product_img_div");
-        productPic.setAttribute("src", detail.imageUrl);
-        productPic.setAttribute("class", "product_img");
-        productPic.setAttribute("alt", "Camera picture");
-        productElement.setAttribute("class", "product_element");
-        productName.setAttribute("class", "product_name");
-        productPrice.setAttribute("class", "product_price");
-        productAction.setAttribute("href", "product.html?id=" + detail._id);
-        addToCartButton.setAttribute("class", "add-btn");
-    
-        /* HTML elements design */
-        cameraCard.appendChild(productContent);
-        productContent.appendChild(productImg);
-        productImg.appendChild(productPic);
-        productContent.appendChild(productElement);
-        productElement.appendChild(productName);
-        productElement.appendChild(productPrice);
-        productElement.appendChild(productAction);
-        productAction.appendChild(addToCartButton);
-    
-        /* HTML balises content */
-        productName.textContent = detail.name;
-        productPrice.textContent = detail.price / 100 + " euros";
-        productAction.textContent = "Add to cart";
-    };
+        if (key === 'imageUrl') { productPic.setAttribute("src", detail); };
+        if (key === 'name') { productName.textContent = detail; };
+        if (key === 'description') { productDescription.textContent = detail; };
+        if (key === 'price') { productPrice.textContent = detail / 100 + " euros"; };
+        
+        if (key === 'lenses') { 
+            for (const lense of detail) {
+                let lenseOption = document.createElement("option");
+                lenseOption.setAttribute("value", lense);
+                lenseOption.textContent = lense;
+                optionsSelector.appendChild(lenseOption);
+            }
+        };
 
-    // Array.from(await cameraDetails).forEach((detail) => {
-    
-    // });
+        // checker localstorage pour enregistrer les infos dans le panier
+
+        // envoyer dans localstorage les infos du panier en string
+
+        // récupérer les infos du localstorage et les transformer en tableau
+    };
 }
 
 buildCameraCard(getCameraDetails());
