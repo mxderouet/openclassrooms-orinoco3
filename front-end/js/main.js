@@ -73,7 +73,7 @@ async function buildCamerasCards(cameras) {
     
         /* HTML balises content */
         productName.textContent = camera.name;
-        productPrice.textContent = camera.price / 100 + " euros";
+        productPrice.textContent = (camera.price / 100).toFixed(2) + " euros";
         productAction.textContent = "Learn more";
     });
 }
