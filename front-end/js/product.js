@@ -31,8 +31,8 @@ callCameraApiWithId = (id) => {
     });
 };
 
-function pushToCart(cart, cameraDetails, lense) {
-    cart.push({ ...cameraDetails, lense });
+function pushToCart(cart, cameraDetails, lense, quantity) {
+    cart.push({ ...cameraDetails, lense, quantity });
 }
 
 async function buildCameraCard() {
@@ -95,21 +95,19 @@ async function buildCameraCard() {
         let cart = [];
         if (localStorage.getItem("cart") !== null) {
             cart = JSON.parse(localStorage.getItem("cart"));
-            console.log(cameraDetails);
-            pushToCart(cart, cameraDetails, optionsSelector.value);
-            // cart.push(cameraDetails.productName, cameraDetails.productPrice, optionsSelector.value);
-            console.log(cart);
-            // if (cart.getItem(cameraDetails)) {
-            //     console.log(cart);
-            // }
+            let cameraInBasket = (cart.find(camera => {
+                return camera._id === cameraDetails._id && camera.lense === optionsSelector.value;
+            }));
+    
+            if (cameraInBasket !== undefined) {
+                cameraInBasket.quantity ++;
+            } else {
+                pushToCart(cart, cameraDetails, optionsSelector.value, 1);
+            }
         } else {
-            pushToCart(cart, cameraDetails, optionsSelector.value);
-            // cart.push("cameraName", optionsSelector.value, 2);
-            // faire cart.push(produit)
-            // pushToCart(cart, cameraDetails, optionsSelector.value);
+            pushToCart(cart, cameraDetails, optionsSelector.value, 1);
         }
         localStorage.setItem("cart", JSON.stringify(cart));  
-        console.log(cart);
     })
     checkoutToBasket(checkoutButton);
 }
