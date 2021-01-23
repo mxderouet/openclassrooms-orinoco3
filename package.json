@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "tw:build": "tailwind build ./front-end/styles/styles.css -o ./front-end/styles/tailwind.css",
+    "tw:watch": "onchange 'tailwind.config.js' '/front-end/**/*.css' -- npm run tw:build"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.2.3",
+    "onchange": "^7.1.0",
+    "postcss-cli": "^8.3.1",
+    "postcss-import": "^14.0.0",
+    "tailwindcss": "^2.0.2"
+  }
+}

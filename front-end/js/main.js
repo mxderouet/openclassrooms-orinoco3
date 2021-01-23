@@ -1,7 +1,5 @@
 const url = 'http://localhost:3000/api/cameras/';
 
-// exporter fonction dans un fichier common.js 
-// utiliser fetch pour remplacer l'appel à l'API
 callCamerasApi = () => {
     return new Promise((resolve) => {
         let request = new XMLHttpRequest();
@@ -29,7 +27,6 @@ callCamerasApi = () => {
 };
 
 async function getCameras() {
-    // encadrer dans un try catch
     const cameras = await callCamerasApi();
 
     return cameras;
@@ -37,11 +34,9 @@ async function getCameras() {
 
 async function buildCamerasCards(cameras) {
     let productList = document.getElementById("productList");
-    console.log(await cameras);
 
     // for (camera in await cameras) {
     Array.from(await cameras).forEach((camera) => {
-        console.log(camera.name);
         let productContent = document.createElement("section");
         let productImg= document.createElement("div");
         let productElement = document.createElement("div");
@@ -55,7 +50,7 @@ async function buildCamerasCards(cameras) {
         productContent.setAttribute("class", "product_content");
         productImg.setAttribute("class", "product_img_div");
         productPic.setAttribute("src", camera.imageUrl);
-        productPic.setAttribute("class", "product_img");
+        productPic.setAttribute("class", "product_img mx-auto");
         productPic.setAttribute("alt", "Camera picture");
         productElement.setAttribute("class", "product_element");
         productName.setAttribute("class", "product_name");
@@ -73,7 +68,7 @@ async function buildCamerasCards(cameras) {
     
         /* HTML balises content */
         productName.textContent = camera.name;
-        productPrice.textContent = (camera.price / 100).toFixed(2) + " euros";
+        productPrice.textContent = (camera.price / 100).toFixed(2) + "$";
         productAction.textContent = "Learn more";
     });
 }

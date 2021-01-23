@@ -15,18 +15,20 @@ function serializeFormAndBasket() {
         },
         products: []
     }
-    const basket = JSON.parse(localStorage.getItem("cart"));
     let orderPrice = 0;
+    let basket = [];
+    basket = JSON.parse(localStorage.getItem("cart"));
     for (item of basket) {
-        console.log(item);
         apiMessage.products.push(item._id);
         orderPrice += (item.price * item.quantity);
     }
-    return { apiMessage, orderPrice }
+    orderPrice = (orderPrice / 100).toFixed(2);
+    return { apiMessage, orderPrice }; 
 }
 
 async function sendToApi(data) {
-    console.log(data);
+    let basket = [];
+    basket = JSON.parse(localStorage.getItem("cart"));
     const request = new XMLHttpRequest();
     request.open("POST", postUrl, true);
     request.setRequestHeader('Content-Type', 'application/json');
@@ -39,12 +41,10 @@ async function sendToApi(data) {
             const request = JSON.parse(this.responseText);
             const orderNumber = request.orderId;
             const orderPrice = data.orderPrice;
-            document.location.href = '/checkout.html#' + orderNumber + '&' + orderPrice;
+            document.location.href = '/checkout.html?order=' + orderNumber + '&price=' + orderPrice;
         }
     };
     request.send(JSON.stringify(data.apiMessage)); 
-    let basket = [];
-    basket = JSON.parse(localStorage.getItem("cart"));
     basket.length = 0;
     localStorage.setItem("cart", JSON.stringify(basket));
 }
@@ -56,7 +56,6 @@ function sendFormButton() {
         e.preventDefault();
         const data = serializeFormAndBasket();
         const orderNumber = await sendToApi(data);
-        console.log(orderNumber);
     })
     return formButton;
 }
@@ -126,7 +125,7 @@ function buildBasket(localStorage) {
         const card = document.getElementById("basketCard");
         let productText = createTag("p", "class", "product-details");
         productText.setAttribute("data-index", index);
-        productText.textContent = `Product: ${localStorage[detail].name} Price: ${localStorage[detail].price} Lense:${localStorage[detail].lense} Quantity: ${localStorage[detail].quantity}`;
+        productText.textContent = `Product: ${localStorage[detail].name} Price: ${(localStorage[detail].price*localStorage[detail].quantity/100).toFixed(2)}$ Lense:${localStorage[detail].lense} Quantity: ${localStorage[detail].quantity}`;
         let deleteButton = createTag("button", "class", "delete-btn");
         deleteButton.textContent = "X";
         deleteButton.setAttribute("data-index", index);
@@ -145,17 +144,3 @@ function buildBasket(localStorage) {
 buildForm();
 
 buildBasket(getLocalStorage());
-
-/**
- *
- * Expects request to contain:
- * contact: {
- *   firstName: string,
- *   lastName: string,
- *   address: string,
- *   city: string,
- *   email: string
- * }
- * products: [string] <-- array of product _id
- *
- */

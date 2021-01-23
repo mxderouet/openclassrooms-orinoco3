@@ -9,17 +9,16 @@ callCameraApiWithId = (id) => {
     return new Promise((resolve) => {
         let request = new XMLHttpRequest();
         request.open("GET", `${url}${id}`);
-        console.log(`${url}${id}`);
         request.setRequestHeader('Content-Type', 'text/plain');
         request.onreadystatechange = function () {
         if (
             this.readyState == XMLHttpRequest.DONE &&
             this.status >= 200 &&
             this.status < 400
-        ) {
+        )   {
             resolve(JSON.parse(this.responseText));
             console.log("Connected");
-        } // add reject promise
+            }
         };
         try {
         request.send();
@@ -45,7 +44,7 @@ async function buildCameraCard() {
     const productContent = createTag("section", "class", "product_content");
     const productImg = createTag("div", "class", "product_img_div");
     const productElement = createTag("div", "class", "product_element");
-    const productPic = createTag("img", "class", "product_img");
+    const productPic = createTag("img", "class", "product_img mx-auto");
     productPic.setAttribute("alt", "Camera picture");
     const productName = createTag("h2", "class", "product_name");
     const productPrice = createTag("p", "class", "product_price");
@@ -78,7 +77,7 @@ async function buildCameraCard() {
         if (key === 'imageUrl') { productPic.setAttribute("src", detail); };
         if (key === 'name') { productName.textContent = detail; };
         if (key === 'description') { productDescription.textContent = detail; };
-        if (key === 'price') { productPrice.textContent = (detail / 100).toFixed(2) + " euros"; };
+        if (key === 'price') { productPrice.textContent = (detail / 100).toFixed(2) + "$"; };
         
         if (key === 'lenses') { 
             for (const lense of detail) {
