@@ -1,6 +1,6 @@
-# orinoco3
+# Orinoco3
 
-You will need `npm`
+You will need `npm`, then 
 `npm install` in both back-end & front-end folders
 
 - back-end start:
