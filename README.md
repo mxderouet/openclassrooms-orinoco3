@@ -7,4 +7,4 @@ You will need `npm`, then
 `node server`
 
 - front-end start:
-`http server`
+`http-server`
