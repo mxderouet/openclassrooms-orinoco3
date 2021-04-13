@@ -1,4 +1,4 @@
-# Orinoco3
+# OpenClassrooms-Orinoco3
 
 You will need `npm`, then 
 `npm install` in both back-end & front-end folders
